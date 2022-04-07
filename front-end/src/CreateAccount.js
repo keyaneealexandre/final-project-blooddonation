@@ -6,6 +6,7 @@
 import { TextField, Button, Input, Stack } from "@mui/material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const CreateAccount = (props) => {
   const [accountData, setAccountData] = useState({
@@ -19,6 +20,26 @@ const CreateAccount = (props) => {
     // Send user data to backend here
     e.preventDefault();
     console.log(accountData);
+    console.log("here");
+
+    axios
+      // post new message to server
+      .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/createaccount`, {
+        firstName: accountData.firstName,
+        lastName: accountData.lastName,
+        email: accountData.email,
+        password: accountData.password,
+      })
+      .then((response) => {
+        // setFeedback(`ooh la la: ${data}`)
+        console.log(response.data.email);
+      })
+      .catch((err) => {
+        console.log(`error error error! ${err}`);
+      });
+
+    // clear form
+    setAccountData({ firstName: "", lastName: "", email: "", password: "" });
   };
 
   const [showPassword] = useState(false);
@@ -71,13 +92,10 @@ const CreateAccount = (props) => {
             }
           />
         </Stack>
-        <Button
-          component={Link}
-          to={"./eligibilityquestionnaire"}
-          type="submit"
-        >
+        <Input type="submit" value="Submit">
           Register
-        </Button>
+        </Input>
+        <br></br>
         <br></br>
         <h1>Already have an account?</h1>
         <Button component={Link} to={"/login"}>
