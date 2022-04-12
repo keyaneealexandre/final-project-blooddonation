@@ -17,12 +17,17 @@ import PowerRedDonation from "./PowerRedDonation";
 import InformationForTeens from "./InformationForTeens";
 import CreateAccount from "./CreateAccount";
 import EligibilityQuestionnaire from "./EligibilityQuestionnaire";
+import { useState } from "react";
 
 const App = (props) => {
+  const jwtToken = localStorage.getItem("token"); // the JWT token, if we have already received one and stored it in localStorage
+  console.log(`JWT token from App: ${jwtToken}`); // debugging
+
+  const [isLoggedIn, setIsLoggedIn] = useState(jwtToken && true);
   return (
     <div className="App">
       <Router>
-        <Header />
+        <Header {...props} updateUser={isLoggedIn} />
         <main className="App-main">
           <Routes>
             <Route path="/" element={<Home />}></Route>
